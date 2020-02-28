@@ -18,6 +18,7 @@ namespace Platformer
         Texture2D texturePlatform;
         Texture2D textureStairs;
         Texture2D textureHeart;
+        Rectangle rectangleSpriteSize;
         protected int[,] level;
         public GameMain()
         {
@@ -81,19 +82,19 @@ namespace Platformer
                     switch(level[i,j])
                     {
                         case 1:
-                            Components.Add(new Platform(this, ref texturePlatform, new Vector2(j,i )));
+                            Components.Add(new Platform(this, ref texturePlatform, new Vector2(j,i ), rectangleSpriteSize));
                             break;
                         case 2:
-                            Components.Add(new Stairs(this, ref textureStairs, new Vector2(j, i)));
+                            Components.Add(new Stairs(this, ref textureStairs, new Vector2(j, i), rectangleSpriteSize));
                             break;
                         case 3:
-                            Components.Add(new Heart(this, ref textureHeart, new Vector2(j, i)));
+                            Components.Add(new Heart(this, ref textureHeart, new Vector2(j, i), rectangleSpriteSize));
                             break;
                         case 4:
-                            Components.Add(new StarCoin(this, ref textureCoin, new Vector2(j, i)));
+                            Components.Add(new StarCoin(this, ref textureCoin, new Vector2(j, i), rectangleSpriteSize));
                             break;
                         case 5:
-                            Components.Add(new Enemy(this, ref textureEnemy, new Vector2(j, i)));
+                            Components.Add(new Enemy(this, ref textureEnemy, new Vector2(j, i), rectangleSpriteSize));
                             break;
                         case 6:
                             a = j;

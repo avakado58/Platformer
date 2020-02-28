@@ -20,7 +20,7 @@ namespace Platformer
         protected Rectangle jampFrameOfTextureMC;
         protected Rectangle[] leftFrameOfTextureMC;
         protected Rectangle[] rightFrameOfTextureMC;
-        public Rectangle sizeOfSprite;
+        public Rectangle  rectangleSpriteSize;
         public int IterRightFrame { get; set; } = 0;
         public int IterLeftFrame { get; set; } = 0;
         public Direction walkingDirection;
@@ -33,7 +33,7 @@ namespace Platformer
         }
         protected virtual void RectangleInitialize()
         {
-            sizeOfSprite = new Rectangle(0, 0, 30, 64);
+            rectangleSpriteSize = new Rectangle(0, 0, 30, 64);
             upDownFrameOfTextureMC = new Rectangle(105,0,30, 64);
             jampFrameOfTextureMC = new Rectangle(57, 67, 30, 64);
             leftFrameOfTextureMC = new Rectangle[] {

@@ -8,12 +8,13 @@ namespace Platformer
     class BaseDrawObj:DrawableGameComponent
     {
         Texture2D textureObj;
-        Vector2 position;
-        public BaseDrawObj(Game game,ref Texture2D textureObj, Vector2 position):base(game)
+        public Vector2 position;
+        public Rectangle rectangleSpriteSize;
+        public BaseDrawObj(Game game,ref Texture2D textureObj, Vector2 position, Rectangle rectangleSpriteSize) :base(game)
         {
             this.textureObj = textureObj;
             this.position = position * 64;
-
+            this.rectangleSpriteSize = rectangleSpriteSize;
         }
         public override void Initialize()
         {

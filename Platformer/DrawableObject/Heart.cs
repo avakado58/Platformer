@@ -9,7 +9,7 @@ namespace Platformer
 {
     class Heart : BaseDrawObj
     {
-        public Heart(Game game, ref Texture2D texturePlatform, Vector2 position) : base(game, ref texturePlatform, position)
+        public Heart(Game game, ref Texture2D texturePlatform, Vector2 position, Rectangle rectangleSpriteSize) : base(game, ref texturePlatform, position, rectangleSpriteSize)
         {
 
         }
