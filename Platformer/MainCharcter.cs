@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -28,13 +29,14 @@ namespace Platformer
         public Direction walkingDirection;
         private readonly float speed = 2;
         private readonly float gravity = 0.8f;//Сила тяжести 
-        private readonly float acceleration = 0.03f;//Ускорения свободного падения
+        private readonly float acceleration = 0.1f;//Ускорения свободного падения
         private float grAcc = 0;//Скорость падения
         private readonly float jump = 70;
         public int Lives { get; private set; } = 2;
         public int Scores { get;private set; } = 0;
         private int enemy;
-
+        TimerCallback tm;
+        Timer timer;
         public MainCharcter(Game game, ref Texture2D texture, Vector2 beginPosition, int enemy) : base(game)
         {
 
@@ -44,6 +46,7 @@ namespace Platformer
             RectangleInitialize();
             this.enemy = enemy;
             bounds = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
+            
         }
         protected virtual void RectangleInitialize()
         {
@@ -341,6 +344,7 @@ namespace Platformer
                 }
             }
         }
+        bool flagLose = false;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -350,20 +354,26 @@ namespace Platformer
             IskillEnemy();
             IsCollideWithAny();
 
-
-            Game.Window.Title = $"Количество очков = {Scores} Количество жизней {Lives}";
-            if(Lives<0)
+            if(!flagLose)
             {
+                Game.Window.Title = $"Количество очков = {Scores} Количество жизней {Lives}";
+            }
+            
+            if(Lives<0&&!flagLose)
+            {
+                flagLose = true;
                 Game.Window.Title = "Вы проиграли";
+                timer = new Timer((obj)=> { Game.Exit(); }, 0,2000, 0);
                 this.Dispose();
             }
             if(enemy==0)
             {
+                
                 Game.Window.Title = "Вы выиграли";
             }
             
         }
-
+        
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = (SpriteBatch)Game.Services.GetService(typeof(SpriteBatch));
