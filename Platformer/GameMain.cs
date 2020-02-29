@@ -34,7 +34,7 @@ namespace Platformer
                { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                };
-
+            rectangleSpriteSize = new Rectangle(0, 0, 64, 64);
         }
 
         /// <summary>
@@ -67,14 +67,14 @@ namespace Platformer
             texturePlatform = Content.Load<Texture2D>("platform");
             textureStairs = Content.Load<Texture2D>("stairs");
             textureHeart = Content.Load<Texture2D>("heart");
-            textureMainCharacter=Content.Load<Texture2D>("MC");
+            textureMainCharacter=Content.Load<Texture2D>("Rectangle ");
             Services.AddService(typeof(SpriteBatch), spriteBatch);
             AddSprite();
 
         }
         void AddSprite()
         {
-            int a = 0, b = 0;
+            int a = 0, b = 0, enemy = 0;
             for (int i = 0; i < level.GetLength(0); i++)
             {
                 for (int j = 0; j < level.GetLength(1); j++)
@@ -95,6 +95,7 @@ namespace Platformer
                             break;
                         case 5:
                             Components.Add(new Enemy(this, ref textureEnemy, new Vector2(j, i), rectangleSpriteSize));
+                            enemy++;
                             break;
                         case 6:
                             a = j;
@@ -105,7 +106,7 @@ namespace Platformer
                     
                 }
             }
-            Components.Add(new MainCharcter(this, ref textureMainCharacter, new Vector2(a, b)));
+            Components.Add(new MainCharcter(this, ref textureMainCharacter, new Vector2(a, b), enemy));
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
