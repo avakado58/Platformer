@@ -13,7 +13,7 @@ namespace Platformer
         Left = 2,
         Right = 3
     }
-    class MainCharcter:DrawableGameComponent
+    public class MainCharcter:DrawableGameComponent
     {
         public Vector2 Position;
         protected Texture2D textureMainCharacter;
@@ -26,11 +26,11 @@ namespace Platformer
         private readonly Rectangle bounds;
         public int IterRightFrame { get; set; } = 0;
         public int IterLeftFrame { get; set; } = 0;
-        public Direction walkingDirection;
+        Direction walkingDirection;
         private readonly float speed = 2;
         private readonly float gravity = 0.8f;//Сила тяжести 
         private readonly float acceleration = 0.1f;//Ускорения свободного падения
-        private float grAcc = 0;//Скорость падения
+        private float grAcc = 2;//Скорость падения
         private readonly float jump = 70;
         public int Lives { get; private set; } = 2;
         public int Scores { get;private set; } = 0;
@@ -50,19 +50,19 @@ namespace Platformer
         }
         protected virtual void RectangleInitialize()
         {
-            rectangleSpriteSize = new Rectangle(0, 0, 32, 32);
+            rectangleSpriteSize = new Rectangle(0, 0, 30, 50);
             forTextureMC = rectangleSpriteSize;
-            upDownFrameOfTextureMC = new Rectangle(105,0,30, 64);
-            jampFrameOfTextureMC = new Rectangle(57, 67, 30, 64);
+            upDownFrameOfTextureMC = new Rectangle(105, 14, 30, 50);
+            jampFrameOfTextureMC = new Rectangle(60, 77, 30, 50);
             leftFrameOfTextureMC = new Rectangle[] {
-                new Rectangle(57,191,30,64),
-                new Rectangle(0,192,30,64),
-                new Rectangle(114,192,30,64)
+                 new Rectangle(10,207,30,50),
+                new Rectangle(57,207,30,50),
+                new Rectangle(105,207,30,50)
             };
             rightFrameOfTextureMC = new Rectangle[] {
-                new Rectangle(57,67,30,64),
-                new Rectangle(0,68,30,64),
-                new Rectangle(114,68,30,64)
+                new Rectangle(10,77,30,50),
+                new Rectangle(60,77,30,50),
+                new Rectangle(108,77,30,50)
             };
         }
         public override void Initialize()
@@ -121,6 +121,7 @@ namespace Platformer
                         this.Position.Y + 1 < platform.position.Y + platform.rectangleSpriteSize.Height)
                     {
                         result = true;
+                        
                     }
                 }
             }
@@ -183,7 +184,9 @@ namespace Platformer
                     {
                         MoveDown(speed / 10);
                     }
+                    walkingDirection = Direction.Jamp;
                 }
+                
                 if(IsCollideWithStairs()==true)
                 {
                     MoveUp(speed);
@@ -191,6 +194,7 @@ namespace Platformer
                     {
                         MoveDown(speed / 10);
                     }
+                    walkingDirection = Direction.UpDown;
                 }
             }
             if (state.IsKeyDown(Keys.S))
@@ -208,6 +212,7 @@ namespace Platformer
                 {
                     MoveRight(speed / 10);
                 }
+                walkingDirection = Direction.Left;
             }
             if (state.IsKeyDown(Keys.D))
             {
@@ -216,6 +221,7 @@ namespace Platformer
                 {
                     MoveLeft(speed / 10);
                 }
+                walkingDirection = Direction.Right;
             }
         }
                                             
@@ -321,7 +327,7 @@ namespace Platformer
                     if (this.Position.X + this.rectangleSpriteSize.Width > FindObj.position.X &&
                     this.Position.X < FindObj.position.X + FindObj.rectangleSpriteSize.Width &&
                     this.Position.Y + this.rectangleSpriteSize.Height < FindObj.position.Y &&
-                    this.Position.Y < FindObj.position.Y + FindObj.rectangleSpriteSize.Height && (FindObj.position.Y - this.Position.Y) < 35)
+                    this.Position.Y < FindObj.position.Y + FindObj.rectangleSpriteSize.Height && (FindObj.position.Y - this.Position.Y) < 53)
                     {
                         
                         
@@ -338,13 +344,14 @@ namespace Platformer
                         Game.Components.Remove(FindObj);
                         FindObj.Dispose();
                         FindObj = null;
+                        GC.Collect();
 
                     }
 
                 }
             }
         }
-        bool flagLose = false;
+        public bool flagLose { private set; get; } = false;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -369,7 +376,8 @@ namespace Platformer
             if(enemy==0)
             {
                 
-                Game.Window.Title = "Вы выиграли";
+                Game.Window.Title = "Вы прошли этот уровень";
+                timer = new Timer((obj) => { Game.Exit(); }, 0, 2000, 0);
             }
             
         }
@@ -389,7 +397,7 @@ namespace Platformer
                     spriteBatch.Draw(textureMainCharacter, Position, leftFrameOfTextureMC[IterLeftFrame], Color.White);
                     break;
                 case Direction.Right:
-                    spriteBatch.Draw(textureMainCharacter, Position, forTextureMC, Color.White);
+                    spriteBatch.Draw(textureMainCharacter, Position, rightFrameOfTextureMC[IterRightFrame], Color.White);
                     break;
             }
 
