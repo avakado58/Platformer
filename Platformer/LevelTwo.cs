@@ -6,7 +6,7 @@ namespace Platformer
 {
     class LevelTwo : MainLevel
     {
-        public LevelTwo(int[,] level) : base(level)
+        public LevelTwo(int[,] level, GraphicsDeviceManager graphics) : base(level, graphics)
         {
 
         }

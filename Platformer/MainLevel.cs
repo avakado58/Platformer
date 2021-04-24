@@ -9,21 +9,21 @@ namespace Platformer
     /// </summary>
     public class MainLevel : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Texture2D textureMainCharacter;
-        Texture2D textureEnemy;
-        Texture2D textureCoin;
-        Texture2D textureFon;
-        Texture2D texturePlatform;
-        Texture2D textureStairs;
-        Texture2D textureHeart;
-        Rectangle rectangleSpriteSize;
+        protected GraphicsDeviceManager graphics;
+        protected SpriteBatch spriteBatch;
+        protected Texture2D textureMainCharacter;
+        protected Texture2D textureEnemy;
+        protected Texture2D textureCoin;
+        protected Texture2D textureFon;
+        protected Texture2D texturePlatform;
+        protected Texture2D textureStairs;
+        protected Texture2D textureHeart;
+        protected Rectangle rectangleSpriteSize;
         protected int[,] level;
         public MainCharcter mainCharcter;
-        public MainLevel(int [,] level)
+        public MainLevel(int [,] level, GraphicsDeviceManager graphics)
         {
-            graphics = new GraphicsDeviceManager(this);
+            this.graphics = graphics;
             Content.RootDirectory = "Content";
             this.level = level; 
             rectangleSpriteSize = new Rectangle(0, 0, 64, 64);

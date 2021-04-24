@@ -7,7 +7,8 @@ namespace Platformer
 {
     class LevelOne:MainLevel
     {
-       public LevelOne (int[,] level):base(level)
+
+        public LevelOne (int[,] level, GraphicsDeviceManager graphics) :base(level, graphics)
         {
             
         }
@@ -35,7 +36,10 @@ namespace Platformer
         }
         protected override void LoadContent()
         {
+            
+           
             base.LoadContent();
+
         }
 
         public void Idraw(GameTime gameTime)
@@ -44,7 +48,9 @@ namespace Platformer
         }
         protected override void Draw(GameTime gameTime)
         {
+
             base.Draw(gameTime);
+
         }
     }
 }
