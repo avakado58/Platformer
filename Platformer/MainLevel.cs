@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Platformer
 {
@@ -27,6 +28,7 @@ namespace Platformer
             Content.RootDirectory = "Content";
             this.level = level; 
             rectangleSpriteSize = new Rectangle(0, 0, 64, 64);
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 35);
         }
 
         /// <summary>

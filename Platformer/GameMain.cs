@@ -12,7 +12,8 @@ namespace Platformer
             Menu,
             LevelOne,
             LevelTwo,
-            EndOfGame,
+            WinOfGame,
+            LoseOFGame
         }
 
         GameState state;

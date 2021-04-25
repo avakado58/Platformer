@@ -27,9 +27,9 @@ namespace Platformer
         public int IterRightFrame { get; set; } = 0;
         public int IterLeftFrame { get; set; } = 0;
         Direction walkingDirection;
-        private readonly float speed = 2;
+        private readonly float speed = 4;
         private readonly float gravity = 0.8f;//Сила тяжести 
-        private readonly float acceleration = 0.1f;//Ускорения свободного падения
+        private readonly float acceleration = 0.3f;//Ускорения свободного падения
         private float grAcc = 2;//Скорость падения
         private readonly float jump = 70;
         public int Lives { get; private set; } = 2;
@@ -213,6 +213,10 @@ namespace Platformer
                     MoveRight(speed / 10);
                 }
                 walkingDirection = Direction.Left;
+                IterLeftFrame++;
+                if (IterLeftFrame == 3)
+                    IterLeftFrame = 0;
+
             }
             if (state.IsKeyDown(Keys.D))
             {
@@ -221,11 +225,14 @@ namespace Platformer
                 {
                     MoveLeft(speed / 10);
                 }
+                IterRightFrame++;
+                if (IterRightFrame == 3)
+                    IterRightFrame = 0;
                 walkingDirection = Direction.Right;
             }
         }
                                             
-        void IsCollideWithAny()
+        void IsCollideWithAny()//добавить звук при столкновении с объектами 
         {
 
             BaseDrawObj FindObj = null;
@@ -283,7 +290,7 @@ namespace Platformer
             }
             if (FindObj != null)
             {
-                Lives--;
+                Lives--;//добавить отталкивание и звук получения урона 
                 FindObj.Dispose();
                 FindObj = null;
 
@@ -395,6 +402,7 @@ namespace Platformer
                     break;
                 case Direction.Left:
                     spriteBatch.Draw(textureMainCharacter, Position, leftFrameOfTextureMC[IterLeftFrame], Color.White);
+
                     break;
                 case Direction.Right:
                     spriteBatch.Draw(textureMainCharacter, Position, rightFrameOfTextureMC[IterRightFrame], Color.White);
