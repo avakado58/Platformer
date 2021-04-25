@@ -48,8 +48,6 @@
     <Compile Include="DrawableObject\Enemy.cs" />
     <Compile Include="GameMain.cs" />
     <Compile Include="MainLevel.cs" />
-    <Compile Include="LevelOne.cs" />
-    <Compile Include="LevelTwo.cs" />
     <Compile Include="MainCharcter.cs" />
     <Compile Include="DrawableObject\Platform.cs" />
     <Compile Include="Program.cs" />
