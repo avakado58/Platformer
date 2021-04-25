@@ -37,6 +37,11 @@ namespace Platformer
         private int enemy;
         TimerCallback tm;
         Timer timer;
+        bool flagEventWin;
+        public delegate void EventStateChange(string stateMC);
+        public event EventStateChange NextLevel;
+        public event EventStateChange WonGame;
+        public event EventStateChange LoseGame;
         public MainCharcter(Game game, ref Texture2D texture, Vector2 beginPosition, int enemy) : base(game)
         {
 
@@ -46,7 +51,9 @@ namespace Platformer
             RectangleInitialize();
             this.enemy = enemy;
             bounds = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-            
+            flagEventWin = false;
+
+
         }
         protected virtual void RectangleInitialize()
         {
@@ -368,7 +375,7 @@ namespace Platformer
             IskillEnemy();
             IsCollideWithAny();
 
-            if(!flagLose)
+            if (!flagLose&&!flagEventWin)
             {
                 Game.Window.Title = $"Количество очков = {Scores} Количество жизней {Lives}";
             }
@@ -377,14 +384,16 @@ namespace Platformer
             {
                 flagLose = true;
                 Game.Window.Title = "Вы проиграли";
-                timer = new Timer((obj)=> { Game.Exit(); }, 0,2000, 0);
+                timer = new Timer((obj)=> { LoseGame?.Invoke($"Количество очков {Scores} "); }, 0,2000, 0);
                 this.Dispose();
             }
-            if(enemy==0)
+            if(enemy==0&&!flagEventWin)
             {
                 
                 Game.Window.Title = "Вы прошли этот уровень";
-                timer = new Timer((obj) => { Game.Exit(); }, 0, 2000, 0);
+                flagEventWin = true;
+                timer = new Timer((obj) => { WonGame?.Invoke($"Количество очков {Scores} "); }, 0, 2000, 0);
+                
             }
             
         }

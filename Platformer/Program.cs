@@ -16,7 +16,10 @@ namespace Platformer
         [STAThread]
         static void Main()
         {
-            StartLevelOne();
+            using (var game = new GameMain())
+            {
+                game.Run();
+            }
             
 
         }
