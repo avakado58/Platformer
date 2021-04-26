@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DrawableObject\BaseDrawObj.cs" />
+    <Compile Include="DrawableObject\Button.cs" />
     <Compile Include="DrawableObject\StarCoin.cs" />
     <Compile Include="DrawableObject\Stairs.cs" />
     <Compile Include="DrawableObject\Heart.cs" />

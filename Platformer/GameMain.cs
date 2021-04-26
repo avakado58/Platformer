@@ -26,22 +26,29 @@ namespace Platformer
         Texture2D texturePlatform;
         Texture2D textureStairs;
         Texture2D textureHeart;
+        Texture2D textureButton;
+        SpriteFont spriteFont;
         Rectangle rectangleSpriteSize;
+        Button butStart;
+        Button butExit;
         protected int[,] levelOne;
         protected int[,] levelTwo;
         public MainCharcter mainCharcter;
         bool flagLoadLevelOne;
         bool flagLoadLevelTwo;
+        bool flagLoadMenu;
         int countLevelWin;
+        
         public GameMain()
         {
-            state = GameState.LevelOne;
+            state = GameState.Menu;
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             rectangleSpriteSize = new Rectangle(0, 0, 64, 64);
             TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 35);
             flagLoadLevelOne = false;
             flagLoadLevelTwo = false;
+            flagLoadMenu = false;
             countLevelWin = 0;
             levelOne = new int[,] {
                { 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -77,6 +84,7 @@ namespace Platformer
         protected override void LoadContent()
         {
             base.LoadContent();
+            spriteFont = Content.Load<SpriteFont>("MenuFont");
             spriteBatch = new SpriteBatch(GraphicsDevice);
             textureEnemy = Content.Load<Texture2D>("Enemy");
             textureCoin = Content.Load<Texture2D>("StarCoin");
@@ -85,6 +93,7 @@ namespace Platformer
             textureStairs = Content.Load<Texture2D>("stairs");
             textureHeart = Content.Load<Texture2D>("heart");
             textureMainCharacter = Content.Load<Texture2D>("main-character-walk-frame");
+            textureButton = Content.Load<Texture2D>("button");
             Services.AddService(typeof(SpriteBatch), spriteBatch);
         }
         void AddSprite(int [,] level)
@@ -135,7 +144,14 @@ namespace Platformer
         {
             state = GameState.LoseOFGame;
         }
-
+        private void ButExit_Clik()
+        {
+            Exit();
+        }
+        private void ButStart_Clik()
+        {
+            state = GameState.LevelOne;
+        }
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -145,19 +161,34 @@ namespace Platformer
             switch(state)
             {
                 case GameState.Menu:
-
+                    this.IsMouseVisible = true;
+                    if(!flagLoadMenu)
+                    {
+                        Components.Clear();
+                        butStart = new Button(this, textureButton, spriteFont, new Vector2(225, 100), "СТАРТ");
+                        butExit = new Button(this, textureButton, spriteFont, new Vector2(225, 200), "ВЫХОД");
+                        butStart.Clik += ButStart_Clik;
+                        butExit.Clik += ButExit_Clik;
+                        Components.Add(butStart);
+                        Components.Add(butExit);
+                        flagLoadMenu = true;
+                    }
                     break;
                 case GameState.LevelOne:
-                    if(!flagLoadLevelOne)
+                    
+                    if (!flagLoadLevelOne)
                     {
+                        this.IsMouseVisible = false;
                         Components.Clear();
                         AddSprite(levelOne);
                         flagLoadLevelOne = true;
                     }
                     break;
                 case GameState.LevelTwo:
+                    
                     if (!flagLoadLevelTwo)
                     {
+                        this.IsMouseVisible = false;
                         Components.Clear();
                         AddSprite(levelTwo);
                         flagLoadLevelTwo = true;
@@ -177,6 +208,9 @@ namespace Platformer
             }
             base.Update(gameTime);
         }
+
+
+
         protected override void UnloadContent()
         {
             base.UnloadContent();
@@ -186,7 +220,13 @@ namespace Platformer
             switch (state)
             {
                 case GameState.Menu:
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
 
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(Content.Load<Texture2D>("Fon"), new Vector2(0, 0), Color.White);
+                    
+                    base.Draw(gameTime);
+                    spriteBatch.End();
                     break;
                 case GameState.LevelOne:
                     GraphicsDevice.Clear(Color.CornflowerBlue);
