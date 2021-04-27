@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Platformer
 {
@@ -13,6 +14,7 @@ namespace Platformer
         Color colorFont;
         SpriteFont spriteFont;
         MouseState mouseState;
+        SoundEffect effect;
         public delegate void EventClik();
         public event EventClik Clik;
         int timeCount;
@@ -27,6 +29,8 @@ namespace Platformer
             this.rectangleSize.Height = textureFon.Height;
             this.spriteFont = spriteFont;
             this.text = text;
+            effect = game.Content.Load<SoundEffect>("butEffect");
+
         }
         protected bool IsMouseClollide()
         {
@@ -41,10 +45,12 @@ namespace Platformer
             mouseState = Mouse.GetState();
             if(IsMouseClollide())
             {
+                
                 Mouse.SetCursor(MouseCursor.Hand);
                 if(mouseState.LeftButton==ButtonState.Pressed)
                 {
                     Clik?.Invoke();
+                    //effect.Play();
                 }
             }
             else
@@ -54,7 +60,7 @@ namespace Platformer
             
             colorFont = Color.FromNonPremultiplied(66, 66, 66, timeCount % 256);
             
-            timeCount += 7;
+            timeCount += 4;
             base.Update(gameTime);
             
         }
@@ -63,7 +69,7 @@ namespace Platformer
             
             SpriteBatch spriteBatch = (SpriteBatch)Game.Services.GetService(typeof(SpriteBatch));
 
-            spriteBatch.Draw(textureFon, position, Color.White);
+            spriteBatch.Draw(textureFon, position, colorFont);
             spriteBatch.DrawString(spriteFont, text, new Vector2(position.X+10,position.Y+5), colorFont);
             base.Draw(gameTime);
 

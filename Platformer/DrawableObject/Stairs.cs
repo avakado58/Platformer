@@ -2,14 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 
 namespace Platformer
 {
     class Stairs : BaseDrawObj
     {
-        public Stairs(Game game, ref Texture2D texturePlatform, Vector2 position, Rectangle rectangleSpriteSize) : base(game, ref texturePlatform, position, rectangleSpriteSize)
+        public Stairs(Game game, ref Texture2D texturePlatform, Vector2 position, Rectangle rectangleSpriteSize,SoundEffect effect ) : base(game, ref texturePlatform, position, rectangleSpriteSize, effect)
         {
 
         }

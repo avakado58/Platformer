@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin butEffect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:butEffect.mp3
+
 #begin ButtonFon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -24,6 +30,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ButtonFon.png;Button.png
+
+#begin Damage.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Damage.mp3
+
+#begin effectWinGame.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:effectWinGame.mp3
 
 #begin Enemy.png
 /importer:TextureImporter
@@ -68,6 +86,24 @@
 /processorParam:TextureFormat=Color
 /build:fon.png
 
+#begin fonMusicLevelOne.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:fonMusicLevelOne.mp3
+
+#begin fonMusicLevelTwo.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:fonMusicLevelTwo.mp3
+
+#begin Heart.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Heart.mp3;HeartE.mp3
+
 #begin heart.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -92,6 +128,18 @@
 /processorParam:TextureFormat=Color
 /build:images.png;Lose.png
 
+#begin LevelStart.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:LevelStart.mp3
+
+#begin Lose.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Lose.mp3;LoseE.mp3
+
 #begin main-character-walk-frame.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -115,6 +163,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MC.png
+
+#begin mnogoznaal_-_antigeroy.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:mnogoznaal_-_antigeroy.mp3
 
 #begin platform.png
 /importer:TextureImporter
@@ -151,6 +205,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:stairs.png
+
+#begin Star.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Star.mp3
 
 #begin StarCoin.png
 /importer:TextureImporter

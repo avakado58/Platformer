@@ -3,6 +3,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Platformer
 {
@@ -24,6 +25,7 @@ namespace Platformer
         protected Rectangle forTextureMC;
         public Rectangle  rectangleSpriteSize;
         private readonly Rectangle bounds;
+        public Color color;
         public int IterRightFrame { get; set; } = 0;
         public int IterLeftFrame { get; set; } = 0;
         Direction walkingDirection;
@@ -39,9 +41,11 @@ namespace Platformer
         Timer timer;
         bool flagEventWin;
         public delegate void EventStateChange(string stateMC);
+        SoundEffect effectWinLevel;
         public event EventStateChange NextLevel;
-        public event EventStateChange WonGame;
+        public event EventStateChange WonLevel;
         public event EventStateChange LoseGame;
+
         public MainCharcter(Game game, ref Texture2D texture, Vector2 beginPosition, int enemy) : base(game)
         {
 
@@ -52,7 +56,8 @@ namespace Platformer
             this.enemy = enemy;
             bounds = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
             flagEventWin = false;
-
+            color = Color.White;
+            effectWinLevel = game.Content.Load<SoundEffect>("LevelStart");
 
         }
         protected virtual void RectangleInitialize()
@@ -250,6 +255,7 @@ namespace Platformer
                     if(IsCollideWithObject((BaseDrawObj)Game.Components[i]))
                     {
                         FindObj = (BaseDrawObj)Game.Components[i];
+                        
                     }
                    
                     
@@ -257,8 +263,10 @@ namespace Platformer
             }
             if (FindObj != null)
             {
+                FindObj.PlaySoundEffect();
                 Scores += 10;
                 Game.Components.Remove(FindObj);
+                
                 FindObj.Dispose();
                 FindObj = null;
 
@@ -270,6 +278,7 @@ namespace Platformer
                     if (IsCollideWithObject((BaseDrawObj)Game.Components[i]))
                     {
                         FindObj = (BaseDrawObj)Game.Components[i];
+                        
                     }
                     
 
@@ -277,6 +286,7 @@ namespace Platformer
             }
             if (FindObj != null)
             {
+                FindObj.PlaySoundEffect();
                 Lives++;
                 Game.Components.Remove(FindObj);
                 FindObj.Dispose();
@@ -297,7 +307,25 @@ namespace Platformer
             }
             if (FindObj != null)
             {
-                Lives--;//добавить отталкивание и звук получения урона 
+                Lives--;
+                FindObj.PlaySoundEffect();
+                color = Color.Red;
+                if(walkingDirection == Direction.Right)
+                {
+                    Position.X -= 32;
+                }
+                if(walkingDirection==Direction.Left)
+                {
+                    Position.X += 32;
+                }
+                if(walkingDirection==Direction.UpDown)
+                {
+                    Position.Y += 32;
+                }
+                if (walkingDirection == Direction.Jamp)
+                {
+                    Position.Y += 32;
+                }
                 FindObj.Dispose();
                 FindObj = null;
 
@@ -369,6 +397,7 @@ namespace Platformer
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            color = Color.White;
             GotoDown();
             Move();
             CheckBounds();
@@ -384,15 +413,15 @@ namespace Platformer
             {
                 flagLose = true;
                 Game.Window.Title = "Вы проиграли";
-                timer = new Timer((obj)=> { LoseGame?.Invoke($"Количество очков {Scores} "); }, 0,2000, 0);
+                timer = new Timer((obj)=> { LoseGame?.Invoke($"Количество очков {Scores} "); }, 0,200, 0);
                 this.Dispose();
             }
             if(enemy==0&&!flagEventWin)
             {
-                
+                effectWinLevel.Play();
                 Game.Window.Title = "Вы прошли этот уровень";
                 flagEventWin = true;
-                timer = new Timer((obj) => { WonGame?.Invoke($"Количество очков {Scores} "); }, 0, 2000, 0);
+                timer = new Timer((obj) => { WonLevel?.Invoke($"Количество очков {Scores} "); }, 0, 2000, 0);
                 
             }
             
@@ -404,17 +433,17 @@ namespace Platformer
             switch (walkingDirection)
             {
                 case Direction.UpDown:
-                    spriteBatch.Draw(textureMainCharacter, Position, upDownFrameOfTextureMC, Color.White);
+                    spriteBatch.Draw(textureMainCharacter, Position, upDownFrameOfTextureMC, color);
                     break;
                 case Direction.Jamp:
-                    spriteBatch.Draw(textureMainCharacter, Position, jampFrameOfTextureMC, Color.White);
+                    spriteBatch.Draw(textureMainCharacter, Position, jampFrameOfTextureMC, color);
                     break;
                 case Direction.Left:
-                    spriteBatch.Draw(textureMainCharacter, Position, leftFrameOfTextureMC[IterLeftFrame], Color.White);
+                    spriteBatch.Draw(textureMainCharacter, Position, leftFrameOfTextureMC[IterLeftFrame], color);
 
                     break;
                 case Direction.Right:
-                    spriteBatch.Draw(textureMainCharacter, Position, rightFrameOfTextureMC[IterRightFrame], Color.White);
+                    spriteBatch.Draw(textureMainCharacter, Position, rightFrameOfTextureMC[IterRightFrame], color);
                     break;
             }
 
