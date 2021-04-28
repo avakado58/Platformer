@@ -43,6 +43,8 @@ namespace Platformer
         SoundEffect effectStartlLevel;
         SoundEffect effectWinGame;
         Hood hood;
+        TimeSpan timeLevelOne;
+        TimeSpan timeLevelTwo;
         protected int[,] levelOne;
         protected int[,] levelTwo;
         public MainCharcter mainCharcter;
@@ -85,7 +87,7 @@ namespace Platformer
                { 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 6, 0, 1, 3, 4, 0, 0, 2, 0, 1, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0 },
+               { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             stopWatch = new Stopwatch();
             
@@ -194,6 +196,11 @@ namespace Platformer
             
             
             MediaPlayer.Play(songLevelTwo);
+            if(!flagLoadLevelTwo)
+            {
+                timeLevelOne = hood.Time;
+            }
+            
             stopWatch.Restart();
             state = GameState.LevelTwo;
             countLevelWin++;
@@ -317,10 +324,11 @@ namespace Platformer
                         flagLoadLevelOne = false;
                         flagLoadLevelTwo = false;
                         flagWinGame = true;
+                        
                         stopWatch.Stop();
                         
                     }
-                   
+                    timeLevelTwo = hood.Time;
                     break;
             }
             base.Update(gameTime);
@@ -384,6 +392,8 @@ namespace Platformer
                     GraphicsDevice.Clear(Color.CornflowerBlue);
                     spriteBatch.Begin();
                     spriteBatch.Draw(Content.Load<Texture2D>("Win"), new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(Content.Load<SpriteFont>("fontHood"),$"Время прохождения первого уровня {timeLevelOne}", new Vector2(50, 200), Color.Black);
+                    spriteBatch.DrawString(Content.Load<SpriteFont>("fontHood"), $"Время прохождения второго уровня {timeLevelTwo}", new Vector2(50, 300), Color.Black);
                     base.Draw(gameTime);
                     spriteBatch.End();
                     break;
