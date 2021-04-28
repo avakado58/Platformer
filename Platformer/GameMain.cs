@@ -85,7 +85,7 @@ namespace Platformer
                { 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+               { 6, 0, 1, 3, 4, 0, 0, 2, 0, 1, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             stopWatch = new Stopwatch();
             
@@ -131,7 +131,7 @@ namespace Platformer
             butBackToMenu = new Button(this, textureButton, spriteFont, new Vector2(225, 400), "В МЕНЮ");
             butBackToMenu.Clik += ButBackToMenu_Clik;
         }
-        void AddSprite(int [,] level)
+        void LoadLevel(int [,] level)
         {
             int a = 0, b = 0, enemy = 0;
             for (int i = 0; i < level.GetLength(0); i++)
@@ -153,8 +153,17 @@ namespace Platformer
                             Components.Add(new StarCoin(this, ref textureCoin, new Vector2(j, i), rectangleSpriteSize, Content.Load<SoundEffect>("Star")));
                             break;
                         case 5:
-                            Components.Add(new Enemy(this, ref textureEnemy, new Vector2(j, i), rectangleSpriteSize, Content.Load<SoundEffect>("Damage")));
-                            enemy++;
+                            if(state == GameState.LevelOne)
+                            {
+                                Components.Add(new Enemy(this, ref textureEnemy, new Vector2(j, i), rectangleSpriteSize, Content.Load<SoundEffect>("Damage")));
+                                enemy++;
+                            }
+                            if (state == GameState.LevelTwo)
+                            {
+                                Components.Add(new EnemyTwo(this, ref textureEnemy, new Vector2(j, i), rectangleSpriteSize, Content.Load<SoundEffect>("Damage")));
+                                enemy++;
+                            }
+
                             break;
                         case 6:
                             a = j;
@@ -173,7 +182,7 @@ namespace Platformer
             Components.Add(mainCharcter);
             Components.Add(hood);
         }
-        
+
 
 
         // Format and display the TimeSpan value.
@@ -247,7 +256,7 @@ namespace Platformer
                         graphics.PreferredBackBufferHeight = 576;
                         graphics.ApplyChanges();
                         Components.Clear();
-                        AddSprite(levelOne);
+                        LoadLevel(levelOne);
                         flagLoadMenu = false;
                         flagLoadLevelOne = true;
                         stopWatch.Restart();
@@ -266,7 +275,7 @@ namespace Platformer
                         graphics.ApplyChanges();
                         this.IsMouseVisible = false;
                         Components.Clear();
-                        AddSprite(levelTwo);
+                        LoadLevel(levelTwo);
                         flagLoadLevelTwo = true;
                         
                     }
