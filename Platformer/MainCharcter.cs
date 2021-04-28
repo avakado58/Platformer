@@ -34,8 +34,8 @@ namespace Platformer
         private readonly float acceleration = 0.3f;//Ускорения свободного падения
         private float grAcc = 2;//Скорость падения
         private readonly float jump = 70;
-        public int Lives { get; private set; } = 2;
-        public int Scores { get;private set; } = 0;
+        public int Lives { get; set; } = 0;
+        public int Scores { get;set; } = 0;
         private int enemy;
         TimerCallback tm;
         Timer timer;
@@ -404,10 +404,10 @@ namespace Platformer
             IskillEnemy();
             IsCollideWithAny();
 
-            if (!flagLose&&!flagEventWin)
+           /* if (!flagLose&&!flagEventWin)
             {
                 Game.Window.Title = $"Количество очков = {Scores} Количество жизней {Lives}";
-            }
+            }*/
             
             if(Lives<0&&!flagLose)
             {
@@ -419,7 +419,7 @@ namespace Platformer
             if(enemy==0&&!flagEventWin)
             {
                 effectWinLevel.Play();
-                Game.Window.Title = "Вы прошли этот уровень";
+                /*Game.Window.Title = "Вы прошли этот уровень";*/
                 flagEventWin = true;
                 timer = new Timer((obj) => { WonLevel?.Invoke($"Количество очков {Scores} "); }, 0, 2000, 0);
                 
@@ -436,7 +436,9 @@ namespace Platformer
                     spriteBatch.Draw(textureMainCharacter, Position, upDownFrameOfTextureMC, color);
                     break;
                 case Direction.Jamp:
-                    spriteBatch.Draw(textureMainCharacter, Position, jampFrameOfTextureMC, color);
+
+                        spriteBatch.Draw(textureMainCharacter, Position, jampFrameOfTextureMC, color);
+
                     break;
                 case Direction.Left:
                     spriteBatch.Draw(textureMainCharacter, Position, leftFrameOfTextureMC[IterLeftFrame], color);

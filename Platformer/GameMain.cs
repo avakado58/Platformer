@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System;
+using System.Diagnostics;
 
 namespace Platformer
 {
@@ -41,6 +42,7 @@ namespace Platformer
         SoundEffect effectLose;
         SoundEffect effectStartlLevel;
         SoundEffect effectWinGame;
+        Hood hood;
         protected int[,] levelOne;
         protected int[,] levelTwo;
         public MainCharcter mainCharcter;
@@ -50,7 +52,8 @@ namespace Platformer
         bool flagWinGame;
         bool flagLoseGame;
         int countLevelWin;
-        
+        Stopwatch stopWatch;
+
         public GameMain()
         {
             state = GameState.Menu;
@@ -64,8 +67,8 @@ namespace Platformer
             flagWinGame = false;
             flagLoseGame = false;
             countLevelWin = 0;
-
             levelOne = new int[,] {
+               { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 1, 0, 1, 3, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 4, 0, 0, 1, 2, 1, 1, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -75,6 +78,7 @@ namespace Platformer
                { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             levelTwo = new int[,] {
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 1, 0, 1, 3, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 4, 0, 0, 1, 2, 1, 1, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -83,7 +87,8 @@ namespace Platformer
                { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-
+            stopWatch = new Stopwatch();
+            
         }
 
 
@@ -118,6 +123,8 @@ namespace Platformer
             songLevelOne = Content.Load<Song>("fonMusicLevelOne");
             songLevelTwo = Content.Load<Song>("fonMusicLevelTwo");
             effectWinGame = Content.Load<SoundEffect>("effectWinGame");
+            hood = new Hood(this, Content.Load<SpriteFont>("fontHood"), new Vector2(0,0));
+            hood.Lives = 2;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.1F;
             
@@ -159,15 +166,26 @@ namespace Platformer
                 }
             }
             mainCharcter = new MainCharcter(this, ref textureMainCharacter, new Vector2(a, b), enemy);
+            mainCharcter.Lives = hood.Lives;
+            mainCharcter.Scores = hood.Score;
             mainCharcter.WonLevel += MainCharcter_WonLevel;
             mainCharcter.LoseGame += MainCharcter_LoseGame;
             Components.Add(mainCharcter);
+            Components.Add(hood);
         }
+        
+
+
+        // Format and display the TimeSpan value.
+        //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+        //    ts.Hours, ts.Minutes, ts.Seconds,
+        //    ts.Milliseconds / 10);
         private void MainCharcter_WonLevel(string stateMC)
         {
             
             
             MediaPlayer.Play(songLevelTwo);
+            stopWatch.Restart();
             state = GameState.LevelTwo;
             countLevelWin++;
         }
@@ -208,41 +226,53 @@ namespace Platformer
                     {
                         MediaPlayer.Play(songMenu);
                         Components.Clear();
-                        butStart = new Button(this, textureButton, spriteFont, new Vector2(225, 100), "СТАРТ");
-                        butExit = new Button(this, textureButton, spriteFont, new Vector2(225, 200), "ВЫХОД");
+                        butStart = new Button(this, textureButton, spriteFont, new Vector2(225, 100), "  СТАРТ");
+                        butExit = new Button(this, textureButton, spriteFont, new Vector2(225, 200), " ВЫХОД");
                         butStart.Clik += ButStart_Clik;
                         butExit.Clik += ButExit_Clik;
                         Components.Add(butStart);
                         Components.Add(butExit);
                         flagLoadMenu = true;
+                        hood.Score = 0;
+                        hood.Lives = 2;
                     }
                     break;
                 case GameState.LevelOne:
-                    
+
+
                     if (!flagLoadLevelOne)
                     {
                         this.IsMouseVisible = false;
                         graphics.PreferredBackBufferWidth = 1280;
-                        graphics.PreferredBackBufferHeight = 512;
+                        graphics.PreferredBackBufferHeight = 576;
                         graphics.ApplyChanges();
                         Components.Clear();
                         AddSprite(levelOne);
                         flagLoadMenu = false;
                         flagLoadLevelOne = true;
+                        stopWatch.Restart();
                     }
+                    hood.Score = mainCharcter.Scores;
+                    hood.Lives = mainCharcter.Lives;
+
+                    hood.Time = stopWatch.Elapsed;
                     break;
                 case GameState.LevelTwo:
-                    
+
                     if (!flagLoadLevelTwo)
                     {
                         graphics.PreferredBackBufferWidth = 1280;
-                        graphics.PreferredBackBufferHeight = 512;
+                        graphics.PreferredBackBufferHeight = 576;
                         graphics.ApplyChanges();
                         this.IsMouseVisible = false;
                         Components.Clear();
                         AddSprite(levelTwo);
                         flagLoadLevelTwo = true;
+                        
                     }
+                    hood.Score = mainCharcter.Scores;
+                    hood.Lives = mainCharcter.Lives;
+                    hood.Time = stopWatch.Elapsed;
                     break;
                 case GameState.LoseOFGame:
                     if(!flagLoseGame)
@@ -278,6 +308,7 @@ namespace Platformer
                         flagLoadLevelOne = false;
                         flagLoadLevelTwo = false;
                         flagWinGame = true;
+                        stopWatch.Stop();
                         
                     }
                    
@@ -316,6 +347,7 @@ namespace Platformer
                     GraphicsDevice.Clear(Color.CornflowerBlue);
 
                     spriteBatch.Begin();
+
                     spriteBatch.Draw(Content.Load<Texture2D>("Fon"), new Vector2(0, 0), Color.White);
                     spriteBatch.Draw(Content.Load<Texture2D>("Fon"), new Vector2(640, 0), Color.White);
                     base.Draw(gameTime);
@@ -326,6 +358,7 @@ namespace Platformer
                     GraphicsDevice.Clear(Color.CornflowerBlue);
 
                     spriteBatch.Begin();
+
                     spriteBatch.Draw(Content.Load<Texture2D>("Fon"), new Vector2(0, 0), Color.White);
                     spriteBatch.Draw(Content.Load<Texture2D>("Fon"), new Vector2(640, 0), Color.White);
                     base.Draw(gameTime);

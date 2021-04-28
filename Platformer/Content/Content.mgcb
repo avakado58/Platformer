@@ -98,6 +98,13 @@
 /processorParam:Quality=Best
 /build:fonMusicLevelTwo.mp3
 
+#begin fontHood.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fontHood.spritefont
+
 #begin Heart.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
