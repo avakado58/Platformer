@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
-namespace Platformer
+namespace Ghostbusters
 {
     class EnemyTwo:Enemy
     {

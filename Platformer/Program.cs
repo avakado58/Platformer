@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Platformer
+namespace Ghostbusters
 {
 #if WINDOWS || LINUX
     /// <summary>

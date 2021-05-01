@@ -201,6 +201,12 @@
 /processorParam:TextureFormat=Color
 /build:Rectangle .png
 
+#begin songMenu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:songMenu.mp3
+
 #begin stairs.png
 /importer:TextureImporter
 /processor:TextureProcessor

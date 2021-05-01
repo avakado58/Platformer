@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
 
-namespace Platformer
+namespace Ghostbusters
 {
     class Platform:BaseDrawObj
     {

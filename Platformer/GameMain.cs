@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Diagnostics;
 
-namespace Platformer
+namespace Ghostbusters
 {
     class GameMain : Game
     {
@@ -71,24 +71,24 @@ namespace Platformer
             countLevelWin = 0;
             levelOne = new int[,] {
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-               { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 1, 0, 1, 3, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 4, 0, 0, 1, 2, 1, 1, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+               { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
+               { 0, 0, 1, 3, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 },
+               { 4, 0, 0, 1, 2, 1, 1, 2, 0, 4, 0, 0, 0, 5, 1, 2, 0, 0, 0, 4 },
+               { 1, 5, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 0, 1, 1, 1, 2, 1, 1, 0 },
+               { 0, 1, 0, 0, 1, 1, 1, 2, 0, 1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 5 },
+               { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 1 },
+               { 6, 0, 1, 3, 4, 5, 0, 2, 0, 1, 2, 0, 5, 1, 3, 0, 2, 0, 5, 3 },
                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             levelTwo = new int[,] {
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 1, 0, 1, 3, 0, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 4, 0, 0, 1, 2, 1, 1, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 6, 0, 1, 3, 4, 0, 5, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-               { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+               { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 3 },
+               { 4, 5, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 2, 1, 1 },
+               { 1, 1, 1, 1, 1, 1, 0, 5, 0, 2, 3, 0, 1, 1, 1, 2, 1, 2, 0, 0 },
+               { 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 2, 0, 0 },
+               { 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0 },
+               { 0, 0, 3, 1, 0, 0, 0, 0, 0, 2, 0, 3, 0, 0, 0, 2, 0, 0, 0, 4 },
+               { 6, 0, 1, 1, 3, 5, 0, 0, 0, 2, 0, 0, 5, 0, 1, 1, 0, 5, 0, 1 },
+               { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             stopWatch = new Stopwatch();
             
         }
@@ -119,7 +119,7 @@ namespace Platformer
             textureMainCharacter = Content.Load<Texture2D>("main-character-walk-frame");
             textureButton = Content.Load<Texture2D>("button");
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-            songMenu = Content.Load<Song>("mnogoznaal_-_antigeroy");
+            songMenu = Content.Load<Song>("songMenu");
             effectLose = Content.Load<SoundEffect>("LoseE");
             effectStartlLevel = Content.Load<SoundEffect>("LevelStart");
             songLevelOne = Content.Load<Song>("fonMusicLevelOne");
@@ -128,7 +128,7 @@ namespace Platformer
             hood = new Hood(this, Content.Load<SpriteFont>("fontHood"), new Vector2(0,0));
             hood.Lives = 2;
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.1F;
+            MediaPlayer.Volume = 0.5F;
             
             butBackToMenu = new Button(this, textureButton, spriteFont, new Vector2(225, 400), "В МЕНЮ");
             butBackToMenu.Clik += ButBackToMenu_Clik;
